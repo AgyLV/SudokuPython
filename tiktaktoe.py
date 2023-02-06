@@ -12,6 +12,7 @@ for row in range(9): #make grid 9x9
     for column in range(9):
         grid[row].append(0) #marge cell
 grid[1][5] = 0 #marked squer, when open the game field
+p_row, p_column=0, 0
 pygame.init()
 window_size = [230, 230] #game fied size
 scr = pygame.display.set_mode(window_size)
@@ -22,20 +23,28 @@ while not done:
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
             done = True 
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             column = pos[0] // (WIDTH + MARGIN)
             row = pos[1] // (HEIGHT + MARGIN)
             grid[row][column] = 1
             print("Click ", pos, "Grid coordinates: ", row, column)
+            if p_row != row or p_column != column:
+               grid[p_row][p_column] = 0
+               print("Click ", pos, "Grid coordinates: ", row, column) 
+               p_row = row
+               p_column = column
+        if event.type == pygame.KEYDOWN: # checking if key "A" was pressed
+            if event.key == pygame.K_1: print("Key A has been pressed")
+
     scr.fill(black) #background color
     for row in range(9):
         for column in range(9):
             color = white
             if grid[row][column] == 1:
                 color = red
-            a=input("")
-            #pygame.draw.rect(scr,
+            #a=input("")
+            pygame.draw.rect(scr,
                              color,
                              [(MARGIN + WIDTH) * column + MARGIN,
                               (MARGIN + HEIGHT) * row + MARGIN,
